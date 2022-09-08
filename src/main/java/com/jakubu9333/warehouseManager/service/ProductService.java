@@ -103,4 +103,7 @@ public class ProductService {
         return product;
     }
 
+    public Product getProduct(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product id " + id + " not found"));
+    }
 }
