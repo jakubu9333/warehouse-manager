@@ -43,23 +43,23 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping(path = "/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.CREATED);
     }
 
-    @DeleteMapping(path = "{productId}")
+    @DeleteMapping(path = "delete/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable(name = "productId") Long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping(path="/update")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
         return new ResponseEntity<>(productService.updateProducts(product), HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "{productId}/buy")
+    @PutMapping(path = "/buy/{productId}")
     public ResponseEntity<Product> buyProduct(@PathVariable(name = "productId") Long id,
                                               @RequestParam(required = false) Integer amount
     ) {
@@ -69,7 +69,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.changeAmount(id, amount), HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "{productId}/sell")
+    @PutMapping(path = "/sell/{productId}")
     public ResponseEntity<Product> sellProduct(@PathVariable(name = "productId") Long id,
                                                @RequestParam(required = false) Integer amount
     ) {
