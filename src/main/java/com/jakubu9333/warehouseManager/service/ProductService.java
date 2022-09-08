@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.beans.Transient;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,39 +49,48 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProducts(Long id, String name, String imageUrl, Integer priceFull, Integer priceCents, Integer amount, Integer row, Integer column, Integer floor) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product id " + id + " not found"));
-
-        if (name != null && name.length() > 0 && !name.equals(product.getName())) {
+    public Product updateProducts(Product newProduct) {
+        Long id = newProduct.getId();
+        Product oldProduct = productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product id " + id + " not found"));
+        String name = newProduct.getName();
+        String imageUrl = newProduct.getImageUrl();
+        Integer priceFull = newProduct.getPriceFull();
+        Integer priceCents = newProduct.getPriceCents();
+        Integer amount = newProduct.getAmount();
+        Integer row = newProduct.getRow();
+        Integer floor = newProduct.getFloor();
+        Integer column = newProduct.getColumn();
+        if (name != null && name.length() > 0 && !name.equals(oldProduct.getName())) {
             Optional<Product> productOpt = productRepository.findByName(name);
             if (productOpt.isPresent()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "name found");
             }
-            product.setName(name);
+            oldProduct.setName(name);
         }
 
-        if (imageUrl != null && imageUrl.length() > 0 && !imageUrl.equals(product.getName())) {
-            product.setImageUrl(imageUrl);
+
+        if (imageUrl != null && imageUrl.length() > 0 && !imageUrl.equals(oldProduct.getName())) {
+            oldProduct.setImageUrl(imageUrl);
         }
-        if (priceFull != null && priceFull > 0 && priceFull != product.getPriceFull()) {
-            product.setPriceFull(priceFull);
+        if (priceFull != null && priceFull > 0 && !priceFull.equals(oldProduct.getPriceFull())) {
+            oldProduct.setPriceFull(priceFull);
         }
-        if (priceCents != null && priceCents > 0 && priceCents != product.getPriceCents()) {
-            product.setPriceCents(priceCents);
+        if (priceCents != null && priceCents > 0 && !priceCents.equals(oldProduct.getPriceCents())) {
+            oldProduct.setPriceCents(priceCents);
         }
-        if (amount != null && amount > 0 && amount != product.getAmount()) {
-            product.setAmount(amount);
+        if (amount != null && amount > 0 && !amount.equals(oldProduct.getAmount())) {
+            oldProduct.setAmount(amount);
         }
-        if (row != null && row > 0 && row != product.getRow()) {
-            product.setRow(row);
+        if (row != null && row > 0 && !row.equals(oldProduct.getRow())) {
+            oldProduct.setRow(row);
         }
-        if (floor != null && floor > 0 && floor != product.getFloor()) {
-            product.setFloor(floor);
+        if (floor != null && floor > 0 && !floor.equals(oldProduct.getFloor())) {
+            oldProduct.setFloor(floor);
         }
-        if (column != null && column > 0 && column != product.getColumn()) {
-            product.setPriceFull(column);
+        if (column != null && column > 0 && !column.equals(oldProduct.getColumn())) {
+            oldProduct.setPriceFull(column);
         }
-        return product;
+        return oldProduct;
     }
 
     @Transactional

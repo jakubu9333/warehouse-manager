@@ -1,12 +1,9 @@
 package com.jakubu9333.warehouseManager.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,15 +30,15 @@ public class Product {
     private Long id;
     private String name;
     private String imageUrl;
-    private int priceFull;
-    private int priceCents;
-    private int amount;
-    private int column;
-    private int row;
-    private int floor;
+    private Integer priceFull;
+    private Integer priceCents;
+    private Integer amount;
+    private Integer column;
+    private Integer row;
+    private Integer floor;
 
 
-    public Product(String name, String imageUrl, int priceFull, int priceCents, int column, int row, int floor, int amount) {
+    public Product(String name, String imageUrl, Integer priceFull, Integer priceCents, Integer column, Integer row, Integer floor, Integer amount) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.priceFull = priceFull;

@@ -3,6 +3,8 @@ package com.jakubu9333.warehouseManager.api;
 import com.jakubu9333.warehouseManager.model.Product;
 import com.jakubu9333.warehouseManager.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,51 +34,44 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        return productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts() {
+        return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
     }
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
+    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+        return new ResponseEntity<>(productService.addProduct(product), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "{productId}")
-    public void deleteProduct(@PathVariable(name = "productId") Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable(name = "productId") Long id) {
         productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping(path = "{productId}")
-    public Product updateProduct(@PathVariable(name = "productId") Long id,
-                                 @RequestParam(required = false) String name,
-                                 @RequestParam(required = false) String imageUrl,
-                                 @RequestParam(required = false) Integer priceFull,
-                                 @RequestParam(required = false) Integer priceCents,
-                                 @RequestParam(required = false) Integer amount,
-                                 @RequestParam(required = false) Integer row,
-                                 @RequestParam(required = false) Integer column,
-                                 @RequestParam(required = false) Integer floor) {
-        return productService.updateProducts(id, name, imageUrl, priceFull, priceCents, amount, row, column, floor);
+    @PutMapping
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        return new ResponseEntity<>(productService.updateProducts(product), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{productId}/buy")
-    public Product buyProduct(@PathVariable(name = "productId") Long id,
-                              @RequestParam(required = false) Integer amount
+    public ResponseEntity<Product> buyProduct(@PathVariable(name = "productId") Long id,
+                                              @RequestParam(required = false) Integer amount
     ) {
         if (amount == null) {
             amount = 1;
         }
-        return productService.changeAmount(id, amount);
+        return new ResponseEntity<>(productService.changeAmount(id, amount), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "{productId}/sell")
-    public Product sellProduct(@PathVariable(name = "productId") Long id,
-                               @RequestParam(required = false) Integer amount
+    public ResponseEntity<Product> sellProduct(@PathVariable(name = "productId") Long id,
+                                               @RequestParam(required = false) Integer amount
     ) {
         if (amount == null) {
             amount = -1;
         }
-        return productService.changeAmount(id, amount);
+        return new ResponseEntity<>(productService.changeAmount(id, amount), HttpStatus.CREATED);
     }
 
 }
