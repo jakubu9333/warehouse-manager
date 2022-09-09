@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author Jakub Uhlarik
@@ -49,5 +50,9 @@ public class WarehouseService {
 
     public void deleteWarehouse(Long id){
         warehouseRepository.deleteById(id);
+    }
+
+    public List<Warehouse> getAllWarehouse() {
+        return warehouseRepository.findAll();
     }
 }

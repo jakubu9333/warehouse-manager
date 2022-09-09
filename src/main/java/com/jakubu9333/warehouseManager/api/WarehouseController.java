@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author Jakub Uhlarik
  */
@@ -53,6 +55,9 @@ public class WarehouseController {
         warehouseService.deleteWarehouse(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @GetMapping(path = "all")
+    public ResponseEntity<List<Warehouse>> getAllWarehouses(){
+        return new ResponseEntity<>(warehouseService.getAllWarehouse(),HttpStatus.OK);
+    }
 
 }
