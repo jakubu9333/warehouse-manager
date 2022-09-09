@@ -50,6 +50,14 @@ public class WarehouseController {
         return new ResponseEntity<>(warehouseService.expandWareHouse(id, row, col, floor),HttpStatus.CREATED);
     }
 
+    @PutMapping("/shrink/{warehouseId}")
+    public ResponseEntity<Warehouse> shrinkWarehouse(@PathVariable("warehouseId") Long id,
+                                                     @RequestParam(required = false) Boolean col,
+                                                     @RequestParam(required = false) Boolean floor,
+                                                     @RequestParam(required = false) Boolean row) {
+        return new ResponseEntity<>(warehouseService.shrinkWareHouse(id, row, col, floor),HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/delete/{warehouseId}")
     public ResponseEntity<?> deleteWarehouse(@PathVariable("warehouseId") Long id ){
         warehouseService.deleteWarehouse(id);

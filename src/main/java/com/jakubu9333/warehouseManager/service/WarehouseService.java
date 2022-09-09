@@ -23,36 +23,46 @@ public class WarehouseService {
     }
 
     public Warehouse getWareHouseById(Long id) {
-        return warehouseRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return warehouseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public Warehouse createWarehouse() {
-        Warehouse warehouse = new Warehouse(0,0,0);
+        Warehouse warehouse = new Warehouse(1, 1, 1);
         warehouseRepository.save(warehouse);
         return warehouse;
     }
 
-    @Transactional
-    public Warehouse expandWareHouse(Long id, Boolean row ,Boolean col, Boolean floor){
-        Warehouse warehouse=warehouseRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (row!= null && row){
-            warehouse.setMaxRow(warehouse.getMaxRow()+1);
-        }
-        if (col!= null && col){
-            warehouse.setMaxColumn(warehouse.getMaxColumn()+1);
-        }
-        if (floor!= null && floor){
-            warehouse.setMaxFloor(warehouse.getMaxFloor()+1);
-        }
 
-        return warehouse;
-    }
-
-    public void deleteWarehouse(Long id){
+    public void deleteWarehouse(Long id) {
         warehouseRepository.deleteById(id);
     }
 
     public List<Warehouse> getAllWarehouse() {
         return warehouseRepository.findAll();
+    }
+
+    @Transactional
+    public Warehouse changeWarehouseSize(Long id, Boolean row, Boolean col, Boolean floor, int amount) {
+        Warehouse warehouse = warehouseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (row != null && row) {
+            warehouse.setMaxRow(warehouse.getMaxRow() + amount);
+        }
+        if (col != null && col) {
+            warehouse.setMaxColumn(warehouse.getMaxColumn() + amount);
+        }
+        if (floor != null && floor) {
+            warehouse.setMaxFloor(warehouse.getMaxFloor() + amount);
+        }
+        return warehouse;
+    }
+
+    @Transactional
+    public Warehouse expandWareHouse(Long id, Boolean row, Boolean col, Boolean floor) {
+        return changeWarehouseSize(id, row, col, floor, 1);
+    }
+
+    @Transactional
+    public Warehouse shrinkWareHouse(Long id, Boolean row, Boolean col, Boolean floor) {
+        return changeWarehouseSize(id, row, col, floor, -1);
     }
 }
